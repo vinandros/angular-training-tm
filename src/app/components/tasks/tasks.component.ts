@@ -17,10 +17,19 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  DeleteTask(task?: Task): void {
+  deleteTask(task?: Task): void {
     this.taskService.deleteTask(task).subscribe(() => {
       this.tasks = this.tasks.filter(
         (taskIterator) => taskIterator.id !== task?.id
+      );
+    });
+  }
+
+  toggleReminder(task?: Task): void {
+    task!.reminder = !task?.reminder;
+    this.taskService.updateTaskReminder(task).subscribe((taskResponse) => {
+      this.tasks = this.tasks.filter((taskIterator) =>
+        taskIterator.id === taskResponse?.id ? taskResponse : taskIterator
       );
     });
   }
